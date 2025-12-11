@@ -26,6 +26,7 @@ import { EducationEditor } from '@/components/cv/editor/EducationEditor';
 import { SkillsEditor } from '@/components/cv/editor/SkillsEditor';
 import { ProjectsEditor } from '@/components/cv/editor/ProjectsEditor';
 import { CertificationsEditor } from '@/components/cv/editor/CertificationsEditor';
+
 import { SettingsEditor } from '@/components/cv/editor/SettingsEditor';
 import { CVPreview } from '@/components/cv/preview/CVPreview';
 
@@ -195,7 +196,6 @@ export default function EditorPage() {
                 <CertificationsEditor />
               </TabsContent>
 
-             
               <TabsContent value="settings" className="space-y-6">
                 <SettingsEditor />
               </TabsContent>

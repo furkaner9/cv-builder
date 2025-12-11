@@ -13,7 +13,7 @@ interface CVStore {
   lastSaved: Date | null;
 
   // Actions - CV Management
-  createCV: (title: string) => void;
+  createCV: (title: string) => string;
   loadCV: (id: string) => void;
   saveCV: () => Promise<void>;
   deleteCV: (id: string) => void;
@@ -126,6 +126,7 @@ export const useCVStore = create<CVStore>()(
           currentCV: newCV,
           cvList: [...state.cvList, newCV],
         }));
+        return newCV.id; // ID'yi döndür
       },
 
       loadCV: (id: string) => {

@@ -20,15 +20,12 @@ export default function HomePage() {
 
   const handleCreateCV = () => {
     if (newCVTitle.trim()) {
-      createCV(newCVTitle);
+      const newCVId = createCV(newCVTitle);
       setNewCVTitle('');
       setIsDialogOpen(false);
       
       // Yeni CV'yi düzenlemek için yönlendir
-      const newCV = cvList[cvList.length];
-      if (newCV) {
-        router.push(`/editor/${newCV.id}`);
-      }
+      router.push(`/editor/${newCVId}`);
     }
   };
 
@@ -48,7 +45,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       {/* Header */}
       <header className="border-b bg-white shadow-sm">
         <div className="container mx-auto px-4 py-6">

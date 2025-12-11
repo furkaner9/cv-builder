@@ -1,21 +1,19 @@
-// components/cv/editor/SettingsEditor.tsx
 "use client";
 
 import { useCVStore } from '@/store/cvStore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
-import { Settings as SettingsIcon, Palette } from 'lucide-react';
+import { Settings as SettingsIcon, Palette, Layout, Type } from 'lucide-react';
 import type { TemplateType } from '@/types/cv';
 
-const templateOptions: { value: TemplateType; label: string }[] = [
-  { value: 'modern', label: 'Modern' },
-  { value: 'classic', label: 'Klasik' },
-  { value: 'minimal', label: 'Minimal' },
-  { value: 'creative', label: 'Yaratıcı' },
-  { value: 'executive', label: 'Yönetici' },
+const templateOptions: { value: TemplateType; label: string; description: string }[] = [
+  { value: 'modern', label: 'Modern', description: 'İki sütun, renkli ve dinamik' },
+  { value: 'classic', label: 'Klasik', description: 'Geleneksel ve profesyonel' },
+  { value: 'minimal', label: 'Minimal', description: 'Sade ve temiz çizgiler' },
+  { value: 'creative', label: 'Yaratıcı', description: 'Cesur ve farklı tasarım' },
+  { value: 'executive', label: 'Yönetici', description: 'Üst düzey pozisyonlar için' },
 ];
 
 const colorThemes = [
@@ -45,13 +43,16 @@ export function SettingsEditor() {
             CV Ayarları
           </CardTitle>
           <CardDescription>
-            CV'nizin görünümünü özelleştirin
+            CV'nizin görünümünü ve düzenini özelleştirin
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Template Seçimi */}
-          <div className="space-y-2">
-            <Label>Template</Label>
+          <div className="space-y-3">
+            <Label className="flex items-center gap-2">
+              <Layout className="h-4 w-4" />
+              Template Seçimi
+            </Label>
             <Select
               value={settings.templateType}
               onValueChange={(value) => updateSettings({ templateType: value as TemplateType })}
@@ -62,11 +63,17 @@ export function SettingsEditor() {
               <SelectContent>
                 {templateOptions.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
-                    {option.label}
+                    <div>
+                      <div className="font-medium">{option.label}</div>
+                      <div className="text-xs text-gray-500">{option.description}</div>
+                    </div>
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
+            <p className="text-xs text-gray-500">
+              Template, CV'nizin genel yapısını ve düzenini belirler
+            </p>
           </div>
 
           {/* Renk Teması */}
@@ -80,29 +87,35 @@ export function SettingsEditor() {
                 <button
                   key={theme.value}
                   onClick={() => updateSettings({ themeColor: theme.value })}
-                  className={`relative h-12 rounded-lg transition-all ${
+                  className={`relative h-14 rounded-lg transition-all hover:scale-105 ${
                     settings.themeColor === theme.value
                       ? 'ring-2 ring-offset-2 ring-blue-500'
-                      : 'hover:scale-105'
+                      : 'border-2 border-gray-200'
                   }`}
                   style={{ backgroundColor: theme.value }}
+                  title={theme.name}
                 >
-                  <span className="sr-only">{theme.name}</span>
                   {settings.themeColor === theme.value && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="h-5 w-5 rounded-full bg-white flex items-center justify-center">
-                        ✓
+                      <div className="h-6 w-6 rounded-full bg-white flex items-center justify-center shadow-lg">
+                        <span className="text-gray-800 font-bold">✓</span>
                       </div>
                     </div>
                   )}
                 </button>
               ))}
             </div>
+            <p className="text-xs text-gray-500">
+              Başlıklar ve vurgular bu renkle gösterilecek
+            </p>
           </div>
 
           {/* Font Boyutu */}
-          <div className="space-y-2">
-            <Label>Yazı Boyutu</Label>
+          <div className="space-y-3">
+            <Label className="flex items-center gap-2">
+              <Type className="h-4 w-4" />
+              Yazı Boyutu
+            </Label>
             <Select
               value={settings.fontSize}
               onValueChange={(value: 'small' | 'medium' | 'large') =>
@@ -113,16 +126,31 @@ export function SettingsEditor() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="small">Küçük</SelectItem>
-                <SelectItem value="medium">Orta</SelectItem>
-                <SelectItem value="large">Büyük</SelectItem>
+                <SelectItem value="small">
+                  <div>
+                    <div className="font-medium">Küçük</div>
+                    <div className="text-xs text-gray-500">Daha fazla içerik sığar</div>
+                  </div>
+                </SelectItem>
+                <SelectItem value="medium">
+                  <div>
+                    <div className="font-medium">Orta</div>
+                    <div className="text-xs text-gray-500">Dengeli görünüm</div>
+                  </div>
+                </SelectItem>
+                <SelectItem value="large">
+                  <div>
+                    <div className="font-medium">Büyük</div>
+                    <div className="text-xs text-gray-500">Daha okunaklı</div>
+                  </div>
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           {/* Spacing */}
-          <div className="space-y-2">
-            <Label>Boşluk</Label>
+          <div className="space-y-3">
+            <Label>Boşluk Ayarı</Label>
             <Select
               value={settings.spacing}
               onValueChange={(value: 'compact' | 'normal' | 'relaxed') =>
@@ -133,15 +161,30 @@ export function SettingsEditor() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="compact">Kompakt</SelectItem>
-                <SelectItem value="normal">Normal</SelectItem>
-                <SelectItem value="relaxed">Rahat</SelectItem>
+                <SelectItem value="compact">
+                  <div>
+                    <div className="font-medium">Kompakt</div>
+                    <div className="text-xs text-gray-500">Minimum boşluk</div>
+                  </div>
+                </SelectItem>
+                <SelectItem value="normal">
+                  <div>
+                    <div className="font-medium">Normal</div>
+                    <div className="text-xs text-gray-500">Dengeli görünüm</div>
+                  </div>
+                </SelectItem>
+                <SelectItem value="relaxed">
+                  <div>
+                    <div className="font-medium">Rahat</div>
+                    <div className="text-xs text-gray-500">Bol boşluk</div>
+                  </div>
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           {/* Sütun Sayısı */}
-          <div className="space-y-2">
+          <div className="space-y-3">
             <Label>Düzen</Label>
             <Select
               value={settings.columnsLayout.toString()}
@@ -153,262 +196,61 @@ export function SettingsEditor() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="1">Tek Sütun</SelectItem>
-                <SelectItem value="2">İki Sütun</SelectItem>
+                <SelectItem value="1">
+                  <div>
+                    <div className="font-medium">Tek Sütun</div>
+                    <div className="text-xs text-gray-500">Klasik düzen</div>
+                  </div>
+                </SelectItem>
+                <SelectItem value="2">
+                  <div>
+                    <div className="font-medium">İki Sütun</div>
+                    <div className="text-xs text-gray-500">Modern görünüm</div>
+                  </div>
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
 
-          {/* Fotoğraf Göster */}
-          <div className="flex items-center justify-between">
-            <Label>Fotoğraf Göster</Label>
-            <Switch
-              checked={settings.showPhoto}
-              onCheckedChange={(checked) => updateSettings({ showPhoto: checked })}
-            />
-          </div>
+          {/* Görünüm Ayarları */}
+          <div className="border-t pt-6 space-y-4">
+            <h3 className="font-semibold text-sm">Görünüm Ayarları</h3>
+            
+            <div className="flex items-center justify-between">
+              <div>
+                <Label htmlFor="showPhoto">Fotoğraf Göster</Label>
+                <p className="text-xs text-gray-500">CV'nizde profil fotoğrafı göster</p>
+              </div>
+              <Switch
+                id="showPhoto"
+                checked={settings.showPhoto}
+                onCheckedChange={(checked) => updateSettings({ showPhoto: checked })}
+              />
+            </div>
 
-          {/* Referanslar Göster */}
-          <div className="flex items-center justify-between">
-            <Label>Referansları Göster</Label>
-            <Switch
-              checked={settings.showReferences}
-              onCheckedChange={(checked) => updateSettings({ showReferences: checked })}
-            />
+            <div className="flex items-center justify-between">
+              <div>
+                <Label htmlFor="showReferences">Referansları Göster</Label>
+                <p className="text-xs text-gray-500">Referans kişilerini CV'de göster</p>
+              </div>
+              <Switch
+                id="showReferences"
+                checked={settings.showReferences}
+                onCheckedChange={(checked) => updateSettings({ showReferences: checked })}
+              />
+            </div>
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
-}
 
-// components/cv/preview/CVPreview.tsx
-"use client";
-
-import type { CVData } from '@/types/cv';
-import { Mail, Phone, MapPin, Globe, Linkedin, Github } from 'lucide-react';
-
-interface CVPreviewProps {
-  cv: CVData;
-  scale?: number;
-}
-
-export function CVPreview({ cv, scale = 1 }: CVPreviewProps) {
-  const { personalInfo, experiences, education, skills, projects, certifications, languages, settings } = cv;
-
-  const spacingClass = {
-    compact: 'space-y-2',
-    normal: 'space-y-4',
-    relaxed: 'space-y-6',
-  }[settings.spacing];
-
-  const fontSizeClass = {
-    small: 'text-sm',
-    medium: 'text-base',
-    large: 'text-lg',
-  }[settings.fontSize];
-
-  return (
-    <div
-      className={`bg-white ${fontSizeClass}`}
-      style={{
-        transform: `scale(${scale})`,
-        transformOrigin: 'top left',
-        width: scale !== 1 ? `${100 / scale}%` : '100%',
-      }}
-    >
-      <div className="max-w-4xl mx-auto p-8">
-        {/* Header */}
-        <div className="border-b-4 pb-6 mb-6" style={{ borderColor: settings.themeColor }}>
-          <h1 className="text-4xl font-bold mb-2" style={{ color: settings.themeColor }}>
-            {personalInfo.fullName}
-          </h1>
-          <p className="text-2xl text-gray-700 mb-4">{personalInfo.title}</p>
-          
-          <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-            {personalInfo.email && (
-              <span className="flex items-center gap-1">
-                <Mail className="h-4 w-4" />
-                {personalInfo.email}
-              </span>
-            )}
-            {personalInfo.phone && (
-              <span className="flex items-center gap-1">
-                <Phone className="h-4 w-4" />
-                {personalInfo.phone}
-              </span>
-            )}
-            {personalInfo.location && (
-              <span className="flex items-center gap-1">
-                <MapPin className="h-4 w-4" />
-                {personalInfo.location}
-              </span>
-            )}
-            {personalInfo.linkedin && (
-              <span className="flex items-center gap-1">
-                <Linkedin className="h-4 w-4" />
-                LinkedIn
-              </span>
-            )}
-            {personalInfo.github && (
-              <span className="flex items-center gap-1">
-                <Github className="h-4 w-4" />
-                GitHub
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* Summary */}
-        {personalInfo.summary && (
-          <div className={`mb-6 ${spacingClass}`}>
-            <h2 className="text-xl font-bold mb-3" style={{ color: settings.themeColor }}>
-              Özet
-            </h2>
-            <p className="text-gray-700 leading-relaxed">{personalInfo.summary}</p>
-          </div>
-        )}
-
-        {/* Experience */}
-        {experiences.length > 0 && (
-          <div className={`mb-6 ${spacingClass}`}>
-            <h2 className="text-xl font-bold mb-3" style={{ color: settings.themeColor }}>
-              İş Deneyimi
-            </h2>
-            {experiences.map((exp) => (
-              <div key={exp.id} className="mb-4">
-                <h3 className="text-lg font-semibold">{exp.position}</h3>
-                <p className="text-gray-700 font-medium">{exp.company}</p>
-                <p className="text-sm text-gray-600 mb-2">
-                  {exp.startDate} - {exp.current ? 'Devam Ediyor' : exp.endDate}
-                  {exp.location && ` • ${exp.location}`}
-                </p>
-                {exp.description && <p className="text-gray-700 mb-2">{exp.description}</p>}
-                {exp.highlights.length > 0 && (
-                  <ul className="list-disc list-inside text-gray-700 space-y-1">
-                    {exp.highlights.map((highlight, idx) => (
-                      <li key={idx}>{highlight}</li>
-                    ))}
-                  </ul>
-                )}
-                {exp.technologies && exp.technologies.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {exp.technologies.map((tech, idx) => (
-                      <span
-                        key={idx}
-                        className="text-xs px-2 py-1 rounded"
-                        style={{ backgroundColor: `${settings.themeColor}20`, color: settings.themeColor }}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Education */}
-        {education.length > 0 && (
-          <div className={`mb-6 ${spacingClass}`}>
-            <h2 className="text-xl font-bold mb-3" style={{ color: settings.themeColor }}>
-              Eğitim
-            </h2>
-            {education.map((edu) => (
-              <div key={edu.id} className="mb-4">
-                <h3 className="text-lg font-semibold">{edu.degree} • {edu.field}</h3>
-                <p className="text-gray-700">{edu.school}</p>
-                <p className="text-sm text-gray-600">
-                  {edu.startDate} - {edu.current ? 'Devam Ediyor' : edu.endDate}
-                  {edu.gpa && ` • GPA: ${edu.gpa}`}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Skills */}
-        {skills.length > 0 && (
-          <div className={`mb-6 ${spacingClass}`}>
-            <h2 className="text-xl font-bold mb-3" style={{ color: settings.themeColor }}>
-              Yetenekler
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {skills.map((skill) => (
-                <span
-                  key={skill.id}
-                  className="px-3 py-1 rounded-full text-sm"
-                  style={{ backgroundColor: `${settings.themeColor}20`, color: settings.themeColor }}
-                >
-                  {skill.name}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Projects */}
-        {projects.length > 0 && (
-          <div className={`mb-6 ${spacingClass}`}>
-            <h2 className="text-xl font-bold mb-3" style={{ color: settings.themeColor }}>
-              Projeler
-            </h2>
-            {projects.map((project) => (
-              <div key={project.id} className="mb-4">
-                <h3 className="text-lg font-semibold">{project.name}</h3>
-                <p className="text-gray-700">{project.description}</p>
-                {project.technologies.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {project.technologies.map((tech, idx) => (
-                      <span
-                        key={idx}
-                        className="text-xs px-2 py-1 rounded"
-                        style={{ backgroundColor: `${settings.themeColor}20`, color: settings.themeColor }}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Certifications */}
-        {certifications.length > 0 && (
-          <div className={`mb-6 ${spacingClass}`}>
-            <h2 className="text-xl font-bold mb-3" style={{ color: settings.themeColor }}>
-              Sertifikalar
-            </h2>
-            {certifications.map((cert) => (
-              <div key={cert.id} className="mb-2">
-                <h3 className="font-semibold">{cert.name}</h3>
-                <p className="text-gray-700 text-sm">
-                  {cert.issuer} • {cert.date}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Languages */}
-        {languages.length > 0 && (
-          <div className={`mb-6 ${spacingClass}`}>
-            <h2 className="text-xl font-bold mb-3" style={{ color: settings.themeColor }}>
-              Diller
-            </h2>
-            <div className="grid grid-cols-2 gap-2">
-              {languages.map((lang) => (
-                <div key={lang.id} className="flex justify-between">
-                  <span className="font-medium">{lang.name}</span>
-                  <span className="text-gray-600 text-sm">{lang.proficiency}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+      {/* Önizleme Bilgisi */}
+      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+        <h4 className="text-sm font-semibold text-amber-900 mb-2">
+          👁️ Önizleme
+        </h4>
+        <p className="text-sm text-amber-800">
+          Yaptığınız değişiklikleri sağ taraftaki önizleme panelinden veya tam ekran önizlemeden görebilirsiniz.
+        </p>
       </div>
     </div>
   );
