@@ -26,7 +26,7 @@ import { EducationEditor } from '@/components/cv/editor/EducationEditor';
 import { SkillsEditor } from '@/components/cv/editor/SkillsEditor';
 import { ProjectsEditor } from '@/components/cv/editor/ProjectsEditor';
 import { CertificationsEditor } from '@/components/cv/editor/CertificationsEditor';
-
+import { LanguagesEditor } from '@/components/cv/editor/LanguagesEditor';
 import { SettingsEditor } from '@/components/cv/editor/SettingsEditor';
 import { CVPreview } from '@/components/cv/preview/CVPreview';
 
@@ -196,6 +196,10 @@ export default function EditorPage() {
                 <CertificationsEditor />
               </TabsContent>
 
+              <TabsContent value="languages" className="space-y-6">
+                <LanguagesEditor />
+              </TabsContent>
+
               <TabsContent value="settings" className="space-y-6">
                 <SettingsEditor />
               </TabsContent>
@@ -205,8 +209,8 @@ export default function EditorPage() {
           {/* Preview Panel */}
           <div className="lg:col-span-1">
             <div className="sticky top-24">
-              <div className="bg-white rounded-lg border shadow-sm p-4">
-                <div className="flex items-center justify-between mb-4">
+              <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
+                <div className="flex items-center justify-between p-4 border-b bg-gray-50">
                   <h3 className="font-semibold text-sm">Canlı Önizleme</h3>
                   <Button
                     variant="ghost"
@@ -217,8 +221,47 @@ export default function EditorPage() {
                     Tam Ekran
                   </Button>
                 </div>
-                <div className="border rounded-lg overflow-hidden">
-                  <CVPreview cv={currentCV} scale={0.3} />
+                
+                {/* Preview Container */}
+                <div className="relative bg-gray-100 overflow-auto" style={{ height: '600px' }}>
+                  <div className="absolute inset-0 flex items-start justify-center p-4">
+                    <div 
+                      className="bg-white shadow-lg origin-top"
+                      style={{ 
+                        transform: 'scale(0.35)',
+                        width: '210mm',
+                        minHeight: '297mm'
+                      }}
+                    >
+                      <CVPreview cv={currentCV} scale={1} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Template Quick Selector */}
+                <div className="p-4 border-t bg-gray-50">
+                  <p className="text-xs text-gray-600 mb-2">Hızlı Template Değiştir:</p>
+                  <div className="grid grid-cols-4 gap-2">
+                    {['modern', 'classic', 'minimal', 'creative'].map((template) => (
+                      <button
+                        key={template}
+                        onClick={() => {
+                          const { updateSettings } = useCVStore.getState();
+                          updateSettings({ templateType: template as any });
+                        }}
+                        className={`text-xs py-2 px-1 rounded border transition-all ${
+                          currentCV.settings.templateType === template
+                            ? 'bg-blue-600 text-white border-blue-600'
+                            : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400'
+                        }`}
+                      >
+                        {template === 'modern' && '🎨 Modern'}
+                        {template === 'classic' && '📄 Klasik'}
+                        {template === 'minimal' && '⚪ Minimal'}
+                        {template === 'creative' && '🚀 Yaratıcı'}
+                      </button>
+                    ))}
+                  </div>
                 </div>
                 
                 {/* Quick Stats */}
@@ -256,7 +299,7 @@ export default function EditorPage() {
                 </div>
 
                 {/* AI Assistant Teaser */}
-                <div className="mt-6 p-3 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-100">
+                <div className="mt-6 p-3 bg-linear-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-100">
                   <div className="flex items-start gap-2">
                     <Sparkles className="h-5 w-5 text-purple-600 mt-0.5" />
                     <div>

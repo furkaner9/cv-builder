@@ -9,6 +9,16 @@ interface TemplateProps {
 export function MinimalTemplate({ cv }: TemplateProps) {
   const { personalInfo, experiences, education, skills, projects, certifications, languages, settings } = cv;
 
+  const getProficiencyLabel = (proficiency: string): string => {
+    const labels: Record<string, string> = {
+      basic: 'Temel',
+      conversational: 'Günlük Konuşma',
+      professional: 'Profesyonel',
+      native: 'Ana Dil',
+    };
+    return labels[proficiency] || proficiency;
+  };
+
   return (
     <div className="bg-white max-w-4xl mx-auto p-16">
       {/* Header - Minimal */}
@@ -203,7 +213,7 @@ export function MinimalTemplate({ cv }: TemplateProps) {
             <div className="space-y-2">
               {languages.map((lang) => (
                 <p key={lang.id} className="text-gray-700 font-light">
-                  {lang.name} <span className="text-gray-500">• {lang.proficiency}</span>
+                  {lang.name} <span className="text-gray-500">• {getProficiencyLabel(lang.proficiency)}</span>
                 </p>
               ))}
             </div>

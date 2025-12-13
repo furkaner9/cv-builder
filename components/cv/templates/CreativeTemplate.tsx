@@ -20,6 +20,16 @@ export function CreativeTemplate({ cv }: TemplateProps) {
     return levels[level] || 2;
   };
 
+  const getProficiencyLabel = (proficiency: string): string => {
+    const labels: Record<string, string> = {
+      basic: 'Temel',
+      conversational: 'Günlük Konuşma',
+      professional: 'Profesyonel',
+      native: 'Ana Dil',
+    };
+    return labels[proficiency] || proficiency;
+  };
+
   return (
     <div className="bg-gray-50">
       {/* Asimetrik Header */}
@@ -131,7 +141,7 @@ export function CreativeTemplate({ cv }: TemplateProps) {
                       />
                       <span className="text-sm text-gray-700">
                         <span className="font-medium">{lang.name}</span>
-                        <span className="text-gray-500"> • {lang.proficiency}</span>
+                        <span className="text-gray-500"> • {getProficiencyLabel(lang.proficiency)}</span>
                       </span>
                     </div>
                   ))}

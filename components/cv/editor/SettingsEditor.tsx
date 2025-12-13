@@ -9,11 +9,11 @@ import { Settings as SettingsIcon, Palette, Layout, Type } from 'lucide-react';
 import type { TemplateType } from '@/types/cv';
 
 const templateOptions: { value: TemplateType; label: string; description: string }[] = [
-  { value: 'modern', label: 'Modern', description: 'İki sütun, renkli ve dinamik' },
-  { value: 'classic', label: 'Klasik', description: 'Geleneksel ve profesyonel' },
-  { value: 'minimal', label: 'Minimal', description: 'Sade ve temiz çizgiler' },
-  { value: 'creative', label: 'Yaratıcı', description: 'Cesur ve farklı tasarım' },
-  { value: 'executive', label: 'Yönetici', description: 'Üst düzey pozisyonlar için' },
+  { value: 'modern', label: 'Modern', description: 'İki sütun, renkli sidebar, modern ve dinamik' },
+  { value: 'classic', label: 'Klasik', description: 'Tek sütun, geleneksel ve profesyonel' },
+  { value: 'minimal', label: 'Minimal', description: 'Sade, temiz çizgiler, bol beyaz alan' },
+  { value: 'creative', label: 'Yaratıcı', description: 'Asimetrik, kartlar, cesur ve farklı' },
+  { value: 'executive', label: 'Yönetici', description: 'Üst düzey pozisyonlar için premium görünüm' },
 ];
 
 const colorThemes = [
@@ -53,26 +53,36 @@ export function SettingsEditor() {
               <Layout className="h-4 w-4" />
               Template Seçimi
             </Label>
-            <Select
-              value={settings.templateType}
-              onValueChange={(value) => updateSettings({ templateType: value as TemplateType })}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {templateOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    <div>
-                      <div className="font-medium">{option.label}</div>
-                      <div className="text-xs text-gray-500">{option.description}</div>
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            
+            {/* Template Grid */}
+            <div className="grid grid-cols-2 gap-3">
+              {templateOptions.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => updateSettings({ templateType: option.value as TemplateType })}
+                  className={`relative p-4 rounded-lg border-2 text-left transition-all hover:shadow-md ${
+                    settings.templateType === option.value
+                      ? 'border-blue-500 bg-blue-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="font-semibold text-sm">{option.label}</h3>
+                    {settings.templateType === option.value && (
+                      <div className="shrink-0 w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                        <span className="text-white text-xs">✓</span>
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    {option.description}
+                  </p>
+                </button>
+              ))}
+            </div>
+            
             <p className="text-xs text-gray-500">
-              Template, CV'nizin genel yapısını ve düzenini belirler
+              Seçtiğiniz template sağ taraftaki önizlemede görünecektir
             </p>
           </div>
 

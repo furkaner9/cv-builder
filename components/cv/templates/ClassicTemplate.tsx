@@ -9,6 +9,16 @@ interface TemplateProps {
 export function ClassicTemplate({ cv }: TemplateProps) {
   const { personalInfo, experiences, education, skills, projects, certifications, languages } = cv;
 
+  const getProficiencyLabel = (proficiency: string): string => {
+    const labels: Record<string, string> = {
+      basic: 'Temel',
+      conversational: 'Günlük Konuşma',
+      professional: 'Profesyonel',
+      native: 'Ana Dil',
+    };
+    return labels[proficiency] || proficiency;
+  };
+
   return (
     <div className="bg-white max-w-4xl mx-auto p-12">
       {/* Header - Merkezi */}
@@ -168,7 +178,7 @@ export function ClassicTemplate({ cv }: TemplateProps) {
           <p className="text-gray-700">
             {languages.map((lang, idx) => (
               <span key={lang.id}>
-                {lang.name} ({lang.proficiency})
+                {lang.name} ({getProficiencyLabel(lang.proficiency)})
                 {idx < languages.length - 1 && ', '}
               </span>
             ))}
