@@ -2,6 +2,7 @@
 
 import type { CVData } from '@/types/cv';
 import { Mail, Phone, MapPin, Star } from 'lucide-react';
+import { ensureHexColor } from '@/lib/utils/colors';
 
 interface TemplateProps {
   cv: CVData;
@@ -9,6 +10,8 @@ interface TemplateProps {
 
 export function CreativeTemplate({ cv }: TemplateProps) {
   const { personalInfo, experiences, education, skills, projects, certifications, languages, settings } = cv;
+
+  const themeColor = ensureHexColor(cv.settings.themeColor);
 
   const getStarCount = (level: string): number => {
     const levels: Record<string, number> = {

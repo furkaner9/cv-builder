@@ -1,7 +1,15 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  
+  // Tailwind 4 için optimizasyon
+  experimental: {
+    optimizeCss: false, // Lab color hatası için
+  },
+  
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

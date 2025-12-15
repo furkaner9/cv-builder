@@ -1,6 +1,7 @@
 "use client";
 
 import type { CVData } from '@/types/cv';
+import { ensureHexColor } from '@/lib/utils/colors';
 
 interface TemplateProps {
   cv: CVData;
@@ -8,6 +9,8 @@ interface TemplateProps {
 
 export function MinimalTemplate({ cv }: TemplateProps) {
   const { personalInfo, experiences, education, skills, projects, certifications, languages, settings } = cv;
+
+  const themeColor = ensureHexColor(cv.settings.themeColor);
 
   const getProficiencyLabel = (proficiency: string): string => {
     const labels: Record<string, string> = {

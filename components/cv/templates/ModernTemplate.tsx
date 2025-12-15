@@ -2,6 +2,7 @@
 
 import type { CVData } from '@/types/cv';
 import { Mail, Phone, MapPin, Globe, Linkedin, Github, Star } from 'lucide-react';
+import { ensureHexColor } from '@/lib/utils/colors';
 
 interface TemplateProps {
   cv: CVData;
@@ -9,6 +10,9 @@ interface TemplateProps {
 
 export function ModernTemplate({ cv }: TemplateProps) {
   const { personalInfo, experiences, education, skills, projects, certifications, languages, settings } = cv;
+
+  // Rengi güvenli hex formatına çevir
+  const themeColor = ensureHexColor(settings.themeColor);
 
   const getStarCount = (level: string): number => {
     const levels: Record<string, number> = {
@@ -36,7 +40,7 @@ export function ModernTemplate({ cv }: TemplateProps) {
         {/* Sol Sidebar - 1/3 */}
         <div 
           className="col-span-1 p-8 text-white"
-          style={{ backgroundColor: settings.themeColor }}
+          style={{ backgroundColor: themeColor }}
         >
           {/* İletişim */}
           <div className="mb-8">
@@ -46,37 +50,37 @@ export function ModernTemplate({ cv }: TemplateProps) {
             <div className="space-y-3 text-sm">
               {personalInfo.email && (
                 <div className="flex items-start gap-2">
-                  <Mail className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                  <Mail className="h-4 w-4 mt-0.5 shrink-0" />
                   <span className="break-all">{personalInfo.email}</span>
                 </div>
               )}
               {personalInfo.phone && (
                 <div className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 flex-shrink-0" />
+                  <Phone className="h-4 w-4 shrink-0" />
                   <span>{personalInfo.phone}</span>
                 </div>
               )}
               {personalInfo.location && (
                 <div className="flex items-start gap-2">
-                  <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                  <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
                   <span>{personalInfo.location}</span>
                 </div>
               )}
               {personalInfo.website && (
                 <div className="flex items-start gap-2">
-                  <Globe className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                  <Globe className="h-4 w-4 mt-0.5 shrink-0" />
                   <span className="break-all">{personalInfo.website}</span>
                 </div>
               )}
               {personalInfo.linkedin && (
                 <div className="flex items-center gap-2">
-                  <Linkedin className="h-4 w-4 flex-shrink-0" />
+                  <Linkedin className="h-4 w-4 shrink-0" />
                   <span className="text-xs">LinkedIn</span>
                 </div>
               )}
               {personalInfo.github && (
                 <div className="flex items-center gap-2">
-                  <Github className="h-4 w-4 flex-shrink-0" />
+                  <Github className="h-4 w-4 shrink-0" />
                   <span className="text-xs">GitHub</span>
                 </div>
               )}
@@ -155,7 +159,7 @@ export function ModernTemplate({ cv }: TemplateProps) {
           <div className="mb-8">
             <h1 
               className="text-4xl font-bold mb-2"
-              style={{ color: settings.themeColor }}
+              style={{ color: themeColor }}
             >
               {personalInfo.fullName || 'Ad Soyad'}
             </h1>
@@ -170,8 +174,8 @@ export function ModernTemplate({ cv }: TemplateProps) {
               <h2 
                 className="text-lg font-bold mb-3 pb-2 border-b-2"
                 style={{ 
-                  color: settings.themeColor,
-                  borderColor: `${settings.themeColor}40`
+                  color: themeColor,
+                  borderColor: `${themeColor}40`
                 }}
               >
                 PROFESYONEL ÖZET

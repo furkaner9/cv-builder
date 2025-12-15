@@ -130,9 +130,14 @@ export const useCVStore = create<CVStore>()(
       },
 
       loadCV: (id: string) => {
+        console.log('Loading CV with ID:', id);
+        console.log('Available CVs:', get().cvList.map(c => c.id));
         const cv = get().cvList.find((c) => c.id === id);
         if (cv) {
+          console.log('CV found:', cv.title);
           set({ currentCV: cv });
+        } else {
+          console.error('CV not found with ID:', id);
         }
       },
 
@@ -536,10 +541,22 @@ export const useCVStore = create<CVStore>()(
       updateSettings: (settings) => {
         set((state) => {
           if (!state.currentCV) return state;
+          
+          const updatedSettings = { ...state.currentCV.settings, ...settings };
+          
+          // Rengi hex formatına çevir
+          if (settings.themeColor) {
+            const color = settings.themeColor;
+            // Eğer hex değilse, varsayılan renk kullan
+            if (!color.startsWith('#')) {
+              updatedSettings.themeColor = '#3B82F6';
+            }
+          }
+          
           return {
             currentCV: {
               ...state.currentCV,
-              settings: { ...state.currentCV.settings, ...settings },
+              settings: updatedSettings,
               updatedAt: new Date(),
             },
           };
