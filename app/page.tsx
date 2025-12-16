@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import { Plus, FileText, Trash2, Copy, Download, Eye, Calendar } from 'lucide-react';
+import { Plus, FileText, Trash2, Copy, Download, Eye, Calendar, GitCompare } from 'lucide-react';
 import { format } from 'date-fns';
 import { tr } from 'date-fns/locale';
 
@@ -23,7 +23,7 @@ export default function HomePage() {
       const newCVId = createCV(newCVTitle);
       setNewCVTitle('');
       setIsDialogOpen(false);
-      
+
       // Yeni CV'yi düzenlemek için yönlendir
       router.push(`/editor/${newCVId}`);
     }
@@ -54,7 +54,16 @@ export default function HomePage() {
               <h1 className="text-3xl font-bold text-gray-900">CV Builder Pro</h1>
               <p className="text-gray-600 mt-1">Profesyonel CV'nizi dakikalar içinde oluşturun</p>
             </div>
-            
+            <Button
+              size="sm"
+              variant="ghost"
+              className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50"
+              onClick={() => router.push('/compare')}
+            >
+              <GitCompare className="w-4 h-4 mr-1" />
+              Karşılaştır
+            </Button>
+
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
                 <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
@@ -159,7 +168,7 @@ export default function HomePage() {
                       {format(new Date(cv.updatedAt), 'dd MMM yyyy, HH:mm', { locale: tr })}
                     </CardDescription>
                   </CardHeader>
-                  
+
                   <CardContent>
                     <div className="space-y-2 text-sm text-gray-600">
                       <div className="flex justify-between">
@@ -190,8 +199,8 @@ export default function HomePage() {
                               (cv.experiences.length > 0 ? 1 : 0) +
                               (cv.education.length > 0 ? 1 : 0) +
                               (cv.skills.length > 0 ? 1 : 0)) /
-                              4 *
-                              100
+                            4 *
+                            100
                           )}%
                         </span>
                       </div>
@@ -204,8 +213,8 @@ export default function HomePage() {
                                 (cv.experiences.length > 0 ? 1 : 0) +
                                 (cv.education.length > 0 ? 1 : 0) +
                                 (cv.skills.length > 0 ? 1 : 0)) /
-                                4 *
-                                100
+                              4 *
+                              100
                             )}%`,
                           }}
                         />
