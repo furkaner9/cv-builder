@@ -11,6 +11,8 @@ import {
   Download,
   FileText,
   ArrowLeft,
+  QrCode,
+  Globe,
   Loader2,
   CheckCircle,
   Sparkles,
@@ -148,6 +150,59 @@ export default function ExportPage() {
       {/* Header */}
       <header className="bg-white border-b sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4">
+          <div className="flex items-center gap-2">
+            {/* YENİ: Portfolio & QR Butonu */}
+            <Button
+              variant="outline"
+              className="border-green-300 text-green-700 hover:bg-green-50"
+              onClick={() => router.push(`/portfolio/${cvId}`)}
+            >
+              <QrCode className="w-4 h-4 mr-2" />
+              QR Kod & Portfolio
+            </Button>
+
+            <Button
+              variant="outline"
+              className="border-purple-300 text-purple-700 hover:bg-purple-50"
+              onClick={() => router.push(`/optimize/${cvId}`)}
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              ATS Analizi
+            </Button>
+
+            <Button
+              variant="outline"
+              onClick={() => router.push(`/editor/${cvId}`)}
+            >
+              Düzenlemeye Dön
+            </Button>
+          </div>
+
+// Export seçenekleri kısmına yeni kart ekleyin:
+          <div className="border rounded-lg p-4 hover:border-green-500 transition-colors border-green-300 bg-green-50">
+            <div className="flex items-start gap-3 mb-3">
+              <Globe className="h-6 w-6 text-green-600 mt-1" />
+              <div className="flex-1">
+                <h3 className="font-semibold text-lg flex items-center gap-2">
+                  Online Portfolio
+                  <span className="text-xs bg-green-600 text-white px-2 py-0.5 rounded">YENİ</span>
+                </h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  CV'nizi online paylaşın, QR kod oluşturun, görüntülenme istatistikleri alın
+                </p>
+                <p className="text-xs text-green-700 font-medium mt-2">
+                  ✓ Paylaşılabilir link • ✓ QR kod • ✓ İstatistikler
+                </p>
+              </div>
+            </div>
+            <Button
+              onClick={() => router.push(`/portfolio/${cvId}`)}
+              className="w-full bg-green-600 hover:bg-green-700"
+            >
+              <QrCode className="mr-2 h-4 w-4" />
+              Portfolio Oluştur
+            </Button>
+          </div>
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
               <Button

@@ -237,7 +237,7 @@ export default function HomePage() {
       </section>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-16 flex-grow relative z-10">
+      <main className="container mx-auto px-4 py-16 grow relative z-10">
         
         {/* Dashboard Search & Stats */}
         <div className="flex flex-col md:flex-row justify-between items-end md:items-center mb-10 gap-6">
@@ -267,7 +267,7 @@ export default function HomePage() {
         {cvList.length === 0 ? (
           // Empty State - Daha Canlı
           <div className="flex flex-col items-center justify-center py-20 text-center bg-white/60 backdrop-blur-md rounded-3xl border border-dashed border-blue-200/60 shadow-sm p-10">
-            <div className="bg-gradient-to-tr from-blue-100 to-indigo-100 p-6 rounded-full mb-6 shadow-inner">
+            <div className="bg-linear-to-tr from-blue-100 to-indigo-100 p-6 rounded-full mb-6 shadow-inner">
               <FileText className="h-12 w-12 text-blue-600" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-3">
@@ -307,7 +307,7 @@ export default function HomePage() {
                 // CV KARTI - Glassmorphism ve Hover Efektleri
                 <Card key={cv.id} className="group relative flex flex-col h-full border-transparent bg-white/70 backdrop-blur-md shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 rounded-2xl overflow-hidden ring-1 ring-gray-100 hover:ring-blue-200/50">
                   {/* Kart Üstü Renkli Çizgi */}
-                  <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-blue-500 via-indigo-500 to-purple-500 opacity-80 group-hover:opacity-100 transition-opacity"></div>
                   
                   <CardHeader className="pb-4 pt-6 relative">
                     <div className="flex justify-between items-start">
@@ -355,7 +355,7 @@ export default function HomePage() {
                         <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden shadow-inner">
                             <div 
                             className={`h-full rounded-full transition-all duration-700 ease-out shadow-sm ${
-                                progress === 100 ? 'bg-gradient-to-r from-green-400 to-green-600' : 'bg-gradient-to-r from-blue-500 to-indigo-600'
+                                progress === 100 ? 'bg-linear-to-r from-green-400 to-green-600' : 'bg-linear-to-r from-blue-500 to-indigo-600'
                             }`}
                             style={{ width: `${progress}%` }}
                             />
