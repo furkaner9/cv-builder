@@ -48,9 +48,9 @@ export default function DashboardPage() {
 
   // Store'lardan veri çek
   const { cvList, createCV } = useCVStore();
-  const { 
-    applications, 
-    getStatistics, 
+  const {
+    applications,
+    getStatistics,
     getUpcomingInterviews,
     getApplicationsByCV,
   } = useApplicationStore();
@@ -63,7 +63,7 @@ export default function DashboardPage() {
 
   // İstatistikleri hesapla
   const appStats = getStatistics();
-  
+
   // Portfolio görüntüleme sayısını hesapla (localStorage'dan)
   const portfolioViews = cvList.reduce((sum, cv) => {
     const portfolio = localStorage.getItem(`portfolio-${cv.id}`);
@@ -77,33 +77,33 @@ export default function DashboardPage() {
   // CV tamlık hesapla
   const calculateCompleteness = (cv: any): number => {
     let score = 0;
-    
+
     // Kişisel bilgiler (20 puan)
     if (cv.personalInfo.fullName) score += 5;
     if (cv.personalInfo.email) score += 5;
     if (cv.personalInfo.phone) score += 5;
     if (cv.personalInfo.summary && cv.personalInfo.summary.length > 50) score += 5;
-    
+
     // Deneyim (30 puan)
     if (cv.experiences.length > 0) score += 15;
     if (cv.experiences.length >= 2) score += 10;
     if (cv.experiences.some((e: any) => e.highlights.length > 0)) score += 5;
-    
+
     // Eğitim (20 puan)
     if (cv.education.length > 0) score += 15;
     if (cv.education.length >= 2) score += 5;
-    
+
     // Yetenekler (15 puan)
     if (cv.skills.length >= 3) score += 8;
     if (cv.skills.length >= 5) score += 7;
-    
+
     // Projeler (10 puan)
     if (cv.projects.length > 0) score += 5;
     if (cv.projects.length >= 2) score += 5;
-    
+
     // Sertifikalar (5 puan)
     if (cv.certifications.length > 0) score += 5;
-    
+
     return Math.min(100, score);
   };
 
@@ -184,10 +184,10 @@ export default function DashboardPage() {
 
   // Filtrelenmiş CV listesi
   const filteredCVs = searchQuery
-    ? cvList.filter(cv => 
-        cv.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        cv.personalInfo.fullName.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+    ? cvList.filter(cv =>
+      cv.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      cv.personalInfo.fullName.toLowerCase().includes(searchQuery.toLowerCase())
+    )
     : cvList.slice(0, 3);
 
   // Handler functions
@@ -230,7 +230,9 @@ export default function DashboardPage() {
                   <FileText className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="font-bold text-xl">CVGenius</h1>
+                  <h1 className="font-bold text-xl"><span className="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-gray-900 via-blue-800 to-gray-900">
+                    CVim
+                  </span></h1>
                   <p className="text-xs text-gray-500">Profesyonel CV Yönetimi</p>
                 </div>
               </div>
@@ -271,8 +273,9 @@ export default function DashboardPage() {
                 <FileText className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="font-bold text-xl">CVGenius</h1>
-                <p className="text-xs text-gray-500">Profesyonel CV Yönetimi</p>
+                <span className="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-gray-900 via-blue-800 to-gray-900">
+                  CVim
+                </span>
               </div>
             </div>
 
@@ -286,7 +289,7 @@ export default function DashboardPage() {
                   <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                 )}
               </div>
-              
+
               <button
                 onClick={handleCreateCV}
                 className="px-4 py-2 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 flex items-center gap-2 font-medium"
@@ -414,7 +417,7 @@ export default function DashboardPage() {
                     <ArrowRight className="w-3 h-3" />
                   </button>
                 </div>
-                
+
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input
@@ -481,21 +484,21 @@ export default function DashboardPage() {
                         </div>
 
                         <div className="flex gap-2">
-                          <button 
+                          <button
                             className="flex-1 px-3 py-2 text-sm border rounded-lg hover:bg-gray-50 flex items-center justify-center gap-1 font-medium"
                             onClick={() => window.location.href = `/editor/${cv.id}`}
                           >
                             <Edit className="w-3 h-3" />
                             Düzenle
                           </button>
-                          <button 
+                          <button
                             className="flex-1 px-3 py-2 text-sm border rounded-lg hover:bg-gray-50 flex items-center justify-center gap-1 font-medium"
                             onClick={() => window.location.href = `/export/${cv.id}`}
                           >
                             <Download className="w-3 h-3" />
                             İndir
                           </button>
-                          <button 
+                          <button
                             className="px-3 py-2 text-sm border rounded-lg hover:bg-gray-50"
                             onClick={() => handleDuplicateCV(cv.id)}
                           >
@@ -514,7 +517,7 @@ export default function DashboardPage() {
               <div className="p-6 border-b">
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-semibold">Son Başvurular</h2>
-                  <button 
+                  <button
                     className="text-sm text-blue-600 hover:underline flex items-center gap-1"
                     onClick={() => window.location.href = '/applications'}
                   >
@@ -529,7 +532,7 @@ export default function DashboardPage() {
                   <div className="p-12 text-center">
                     <Briefcase className="w-12 h-12 text-gray-300 mx-auto mb-3" />
                     <p className="text-gray-500 mb-3">Henüz başvuru yok</p>
-                    <button 
+                    <button
                       className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
                       onClick={() => window.location.href = '/applications/new'}
                     >
@@ -540,8 +543,8 @@ export default function DashboardPage() {
                   recentApplications.map((app) => {
                     const statusConfig = STATUS_CONFIG[app.status];
                     return (
-                      <div 
-                        key={app.id} 
+                      <div
+                        key={app.id}
                         className="p-6 hover:bg-gray-50 transition-colors cursor-pointer"
                         onClick={() => window.location.href = `/applications/${app.id}`}
                       >
@@ -649,7 +652,7 @@ export default function DashboardPage() {
                 </div>
               )}
 
-              <button 
+              <button
                 className="w-full mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm font-medium"
                 onClick={() => window.location.href = '/applications'}
               >
@@ -665,13 +668,13 @@ export default function DashboardPage() {
               </h3>
 
               <p className="text-sm text-gray-700 mb-4">
-                {stats.totalApplications < 5 
+                {stats.totalApplications < 5
                   ? "Her hafta en az 3-5 başvuru yapmanız kariyerinize momentum kazandırır!"
                   : stats.offers === 0
-                  ? "CV'nizde başarılarınızı sayısal verilerle destekleyin! Örneğin: 'Satışları %30 artırdım'"
-                  : stats.interviews > 0 && stats.offers === 0
-                  ? "Mülakat sonrası 24 saat içinde teşekkür maili göndermek olumlu izlenim bırakır."
-                  : "Harika gidiyorsunuz! LinkedIn profilinizi CV'nizle tutarlı tutmayı unutmayın."}
+                    ? "CV'nizde başarılarınızı sayısal verilerle destekleyin! Örneğin: 'Satışları %30 artırdım'"
+                    : stats.interviews > 0 && stats.offers === 0
+                      ? "Mülakat sonrası 24 saat içinde teşekkür maili göndermek olumlu izlenim bırakır."
+                      : "Harika gidiyorsunuz! LinkedIn profilinizi CV'nizle tutarlı tutmayı unutmayın."}
               </p>
 
               <button className="text-sm text-green-600 hover:underline font-medium">

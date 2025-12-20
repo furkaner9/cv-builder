@@ -80,7 +80,9 @@ export default function DonatePage() {
             {finalAmount} TL bağışınız için minnettarız
           </p>
           <p className="text-gray-600 mb-8">
-            Desteğiniz sayesinde CVGenius'u daha da geliştirmeye devam edebileceğiz!
+            Desteğiniz sayesinde<span className="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-gray-900 via-blue-800 to-gray-900">
+              CVim
+            </span>daha da geliştirmeye devam edebileceğiz!
           </p>
           <button
             onClick={() => window.location.href = '/dashboard'}
@@ -125,7 +127,7 @@ export default function DonatePage() {
               CVGenius'u Destekleyin
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6">
-              Tamamen ücretsiz olan CVGenius'u geliştirmeye devam edebilmemiz için 
+              Tamamen ücretsiz olan CVGenius'u geliştirmeye devam edebilmemiz için
               desteğinize ihtiyacımız var 💝
             </p>
             <p className="text-lg text-gray-700 font-medium">
@@ -181,11 +183,10 @@ export default function DonatePage() {
                         setSelectedAmount(item.amount);
                         setCustomAmount('');
                       }}
-                      className={`p-4 border-2 rounded-xl text-left transition-all hover:scale-105 ${
-                        selectedAmount === item.amount && !customAmount
+                      className={`p-4 border-2 rounded-xl text-left transition-all hover:scale-105 ${selectedAmount === item.amount && !customAmount
                           ? 'border-pink-500 bg-pink-50'
                           : 'border-gray-200 hover:border-pink-300'
-                      }`}
+                        }`}
                     >
                       <div className="text-2xl font-bold mb-1">{item.amount} TL</div>
                       <div className="text-sm font-medium mb-1">{item.label}</div>
@@ -253,11 +254,10 @@ export default function DonatePage() {
                   <div className="grid grid-cols-3 gap-3">
                     <button
                       onClick={() => setPaymentMethod('card')}
-                      className={`p-4 border-2 rounded-lg flex flex-col items-center gap-2 transition-all ${
-                        paymentMethod === 'card'
+                      className={`p-4 border-2 rounded-lg flex flex-col items-center gap-2 transition-all ${paymentMethod === 'card'
                           ? 'border-pink-500 bg-pink-50'
                           : 'border-gray-200 hover:border-pink-300'
-                      }`}
+                        }`}
                     >
                       <CreditCard className="w-6 h-6" />
                       <span className="text-sm font-medium">Kredi Kartı</span>
@@ -265,11 +265,10 @@ export default function DonatePage() {
 
                     <button
                       onClick={() => setPaymentMethod('papara')}
-                      className={`p-4 border-2 rounded-lg flex flex-col items-center gap-2 transition-all ${
-                        paymentMethod === 'papara'
+                      className={`p-4 border-2 rounded-lg flex flex-col items-center gap-2 transition-all ${paymentMethod === 'papara'
                           ? 'border-pink-500 bg-pink-50'
                           : 'border-gray-200 hover:border-pink-300'
-                      }`}
+                        }`}
                     >
                       <Wallet className="w-6 h-6" />
                       <span className="text-sm font-medium">Papara</span>
@@ -277,11 +276,10 @@ export default function DonatePage() {
 
                     <button
                       onClick={() => setPaymentMethod('crypto')}
-                      className={`p-4 border-2 rounded-lg flex flex-col items-center gap-2 transition-all ${
-                        paymentMethod === 'crypto'
+                      className={`p-4 border-2 rounded-lg flex flex-col items-center gap-2 transition-all ${paymentMethod === 'crypto'
                           ? 'border-pink-500 bg-pink-50'
                           : 'border-gray-200 hover:border-pink-300'
-                      }`}
+                        }`}
                     >
                       <span className="text-2xl">₿</span>
                       <span className="text-sm font-medium">Crypto</span>

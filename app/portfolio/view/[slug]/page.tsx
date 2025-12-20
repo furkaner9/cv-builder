@@ -29,7 +29,7 @@ import type { OnlinePortfolio } from '@/types/portfolio';
 export default function PublicPortfolioPage() {
   const params = useParams();
   const slug = params.slug as string;
-  
+
   const [portfolio, setPortfolio] = useState<OnlinePortfolio | null>(null);
   const [cv, setCV] = useState<CVData | null>(null);
   const [password, setPassword] = useState('');
@@ -40,7 +40,7 @@ export default function PublicPortfolioPage() {
     // Portfolio ve CV verilerini yükle (gerçek uygulamada API'den gelir)
     // Şimdilik demo için localStorage'dan alalım
     const allCVs = JSON.parse(localStorage.getItem('cv-storage') || '{"cvList":[]}');
-    
+
     // Tüm portfolio'ları tara
     let foundPortfolio: OnlinePortfolio | null = null;
     let foundCV: CVData | null = null;
@@ -58,7 +58,7 @@ export default function PublicPortfolioPage() {
 
     if (foundPortfolio && foundCV) {
       setPortfolio(foundPortfolio);
-      
+
       // Şifre koruması kontrolü
       if (!(foundPortfolio as OnlinePortfolio).passwordProtected) {
         setCV(foundCV);
@@ -85,7 +85,7 @@ export default function PublicPortfolioPage() {
     if (password === portfolio.password) {
       setIsUnlocked(true);
       setError('');
-      
+
       // CV'yi yükle
       const allCVs = JSON.parse(localStorage.getItem('cv-storage') || '{"cvList":[]}');
       const foundCV = allCVs.cvList.find((c: CVData) => c.id === portfolio.cvId);
@@ -100,14 +100,14 @@ export default function PublicPortfolioPage() {
 
   const handleDownload = () => {
     if (!portfolio) return;
-    
+
     // Download count artır
     const updated = {
       ...portfolio,
       downloadCount: portfolio.downloadCount + 1,
     };
     localStorage.setItem(`portfolio-${portfolio.cvId}`, JSON.stringify(updated));
-    
+
     // PDF indirme işlemi (gerçek uygulamada)
     alert('PDF indirme özelliği yakında eklenecek');
   };
@@ -171,7 +171,7 @@ export default function PublicPortfolioPage() {
                 Bu portfolio'yu görüntülemek için şifre gerekiyor
               </p>
             </div>
-            
+
             <div className="space-y-4">
               <Input
                 type="password"
@@ -180,11 +180,11 @@ export default function PublicPortfolioPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handlePasswordSubmit()}
               />
-              
+
               {error && (
                 <p className="text-sm text-red-600 text-center">{error}</p>
               )}
-              
+
               <Button
                 onClick={handlePasswordSubmit}
                 className="w-full"
@@ -207,7 +207,7 @@ export default function PublicPortfolioPage() {
     );
   }
 
-  const isDark = portfolio.theme === 'dark' || 
+  const isDark = portfolio.theme === 'dark' ||
     (portfolio.theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
   return (
@@ -234,7 +234,7 @@ export default function PublicPortfolioPage() {
                 <Share2 className="w-4 h-4 mr-2" />
                 Paylaş
               </Button>
-              
+
               {portfolio.allowDownload && (
                 <Button
                   size="sm"
@@ -257,7 +257,7 @@ export default function PublicPortfolioPage() {
             <div className="text-center mb-8 pb-8 border-b">
               <h1 className="text-4xl font-bold mb-2">{cv.personalInfo.fullName}</h1>
               <p className="text-xl text-gray-600 mb-4">{cv.personalInfo.title}</p>
-              
+
               <div className="flex flex-wrap justify-center gap-4 text-sm">
                 {cv.personalInfo.email && (
                   <a href={`mailto:${cv.personalInfo.email}`} className="flex items-center gap-2 hover:text-blue-600">
@@ -436,7 +436,9 @@ export default function PublicPortfolioPage() {
 
         {/* Footer */}
         <div className="text-center mt-8 text-sm text-gray-500">
-          <p>Bu portfolio <span className="font-semibold">CVGenius</span> ile oluşturuldu</p>
+          <p>Bu portfolio <span className="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-gray-900 via-blue-800 to-gray-900">
+            CVim
+          </span> ile oluşturuldu</p>
         </div>
       </div>
     </div>

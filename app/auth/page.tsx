@@ -92,16 +92,18 @@ export default function AuthPage() {
   const pwdStrength = mode === 'register' ? passwordStrength(formData.password) : null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         {/* Left Side - Branding */}
         <div className="hidden lg:block">
-          <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl p-12 text-white">
+          <div className="bg-linear-to-br from-blue-600 to-purple-600 rounded-2xl p-12 text-white">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
                 <FileText className="w-7 h-7 text-blue-600" />
               </div>
-              <h1 className="text-3xl font-bold">CVGenius</h1>
+             <span className="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-gray-900 via-blue-800 to-gray-900">
+        CVim
+      </span>
             </div>
 
             <h2 className="text-4xl font-bold mb-4">
@@ -113,7 +115,7 @@ export default function AuthPage() {
 
             <div className="space-y-4">
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center shrink-0">
                   <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
@@ -123,7 +125,7 @@ export default function AuthPage() {
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center shrink-0">
                   <Zap className="w-5 h-5" />
                 </div>
                 <div>
@@ -133,7 +135,7 @@ export default function AuthPage() {
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center shrink-0">
                   <Shield className="w-5 h-5" />
                 </div>
                 <div>
@@ -157,7 +159,7 @@ export default function AuthPage() {
         <div className="bg-white rounded-2xl shadow-xl p-8">
           {/* Mobile Logo */}
           <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-linear-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
               <FileText className="w-6 h-6 text-white" />
             </div>
             <h1 className="text-2xl font-bold">CVGenius</h1>
@@ -199,7 +201,7 @@ export default function AuthPage() {
           {/* Error Message */}
           {error && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
               <p className="text-sm text-red-700">{error}</p>
             </div>
           )}
@@ -360,7 +362,7 @@ export default function AuthPage() {
             <button
               onClick={handleSubmit}
               disabled={isLoading}
-              className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full py-3 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>
