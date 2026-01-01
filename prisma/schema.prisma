@@ -1,0 +1,432 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// USER & PROFILE
+// ============================================
+model User {
+  id        String  @id @default(cuid())
+  clerkId   String  @unique
+  email     String  @unique
+  firstName String?
+  lastName  String?
+  imageUrl  String?
+
+  // Plan & Subscription
+  plan       UserPlan  @default(FREE)
+  planExpiry DateTime?
+  credits    Int       @default(3)
+
+  // Preferences
+  language     String  @default("tr")
+  theme        String  @default("auto")
+  notifications Boolean @default(true) // Bu, kullanıcının bildirim ayarıdır (Boolean)
+  emailUpdates Boolean @default(true)
+
+  // Relations
+  cvs              CV[]
+  applications     Application[]
+  portfolios       Portfolio[]
+  donations        Donation[]
+  notificationList Notification[] // DÜZELTME: Bildirimler ile ilişki eklendi (Boolean ile çakışmaması için isim farklı verildi)
+
+  lastLoginAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([clerkId])
+  @@index([email])
+}
+
+enum UserPlan {
+  FREE
+  PREMIUM
+  ENTERPRISE
+}
+
+// ============================================
+// CV & DATA
+// ============================================
+model CV {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Basic Info
+  title        String       @default("Untitled CV")
+  templateId   String       @default("modern")
+  templateType TemplateType @default(MODERN)
+
+  // Personal Info (JSON for flexibility)
+  personalInfo Json // PersonalInfo interface
+
+  // CV Sections (JSON Arrays)
+  experiences    Json[] // Experience[]
+  education      Json[] // Education[]
+  skills         Json[] // Skill[]
+  projects       Json[] // Project[]
+  certifications Json[] // Certification[]
+  languages      Json[] // Language[]
+  references     Json[] // Reference[]
+  volunteer      Json[] // Volunteer[]
+  awards         Json[] // Award[]
+  publications   Json[] // Publication[]
+
+  // Settings (JSON)
+  settings Json // CVSettings
+
+  // ATS & Analytics
+  atsScore        Int   @default(0)
+  atsAnalysis     Json? // CVAnalytics
+  completionScore Int   @default(0)
+
+  // Portfolio
+  portfolios   Portfolio[]
+  applications Application[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([userId, updatedAt])
+}
+
+enum TemplateType {
+  MODERN
+  CLASSIC
+  MINIMAL
+  CREATIVE
+  EXECUTIVE
+}
+
+// ============================================
+// PORTFOLIO & QR CODES
+// ============================================
+model Portfolio {
+  id     String @id @default(cuid())
+  cvId   String
+  cv     CV     @relation(fields: [cvId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // URL & Access
+  slug     String  @unique
+  isPublic Boolean @default(false)
+  isActive Boolean @default(true)
+
+  // QR Code
+  qrCodeData     String? @db.Text // Base64 encoded QR code
+  qrCodeSettings Json? // QRCodeOptions
+
+  // Customization
+  customDomain String?
+  theme        String @default("light")
+
+  // Settings
+  settings Json // PortfolioSettings
+
+  // Security
+  passwordProtected Boolean @default(false)
+  password          String?
+
+  // SEO
+  metaTitle       String?
+  metaDescription String? @db.Text
+  metaImage       String?
+
+  // Analytics
+  viewCount      Int       @default(0)
+  uniqueVisitors Int       @default(0)
+  downloadCount  Int       @default(0)
+  lastViewedAt   DateTime?
+
+  // Views tracking
+  views PortfolioView[]
+
+  expiresAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([slug])
+  @@index([cvId])
+  @@index([userId])
+}
+
+model PortfolioView {
+  id          String    @id @default(cuid())
+  portfolioId String
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  // Visitor Info
+  ipAddress String?
+  location  String?
+  device    String?
+  browser   String?
+  referrer  String?
+
+  // Tracking
+  duration Int? // Seconds
+  viewedAt DateTime @default(now())
+
+  @@index([portfolioId])
+  @@index([viewedAt])
+}
+
+// ============================================
+// JOB APPLICATIONS
+// ============================================
+model Application {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  cvId    String?
+  cv      CV?     @relation(fields: [cvId], references: [id], onDelete: SetNull)
+  cvTitle String
+
+  // Company & Position
+  company    String
+  position   String
+  department String?
+  location   String?
+  jobType    JobType  @default(FULL_TIME)
+  workMode   WorkMode @default(HYBRID)
+
+  // Application Details
+  status      ApplicationStatus @default(DRAFT)
+  priority    Priority          @default(MEDIUM)
+  appliedDate DateTime          @default(now())
+  deadline    DateTime?
+
+  // Contact Info
+  contactPerson  String?
+  contactEmail   String?
+  contactPhone   String?
+  recruiterName  String?
+  recruiterEmail String?
+
+  // Links
+  jobPostingUrl        String?
+  companyWebsite       String?
+  applicationPortalUrl String?
+
+  // Salary
+  salaryMin      Int?
+  salaryMax      Int?
+  salaryCurrency String   @default("TRY")
+  benefits       String[]
+
+  // Application Details
+  coverLetterUsed Boolean           @default(false)
+  coverLetterId   String?
+  source          ApplicationSource @default(COMPANY_WEBSITE)
+  referralName    String?
+
+  // Notes & Tags
+  notes String?  @db.Text
+  tags  String[]
+
+  // Relations
+  activities  ApplicationActivity[]
+  interviews  Interview[]
+  attachments Json[] // ApplicationAttachment[]
+
+  // Response tracking
+  responseTime Int? // Days
+
+  archivedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([priority])
+  @@index([userId, appliedDate])
+}
+
+enum ApplicationStatus {
+  DRAFT
+  APPLIED
+  SCREENING
+  INTERVIEW
+  OFFER
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+  FREELANCE
+}
+
+enum WorkMode {
+  REMOTE
+  HYBRID
+  ONSITE
+}
+
+enum ApplicationSource {
+  LINKEDIN
+  INDEED
+  COMPANY_WEBSITE
+  REFERRAL
+  RECRUITER
+  OTHER
+}
+
+model ApplicationActivity {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  type        ActivityType
+  title       String
+  description String?      @db.Text
+
+  oldStatus ApplicationStatus?
+  newStatus ApplicationStatus?
+
+  createdBy String?
+  createdAt DateTime @default(now())
+
+  @@index([applicationId])
+  @@index([createdAt])
+}
+
+enum ActivityType {
+  STATUS_CHANGE
+  NOTE
+  EMAIL
+  CALL
+  INTERVIEW
+  OFFER
+  REMINDER
+}
+
+model Interview {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  type     InterviewType
+  title    String
+  date     DateTime
+  duration Int? // Minutes
+
+  location     String?
+  meetingUrl   String?
+  interviewers String[]
+
+  notes     String?          @db.Text
+  feedback  String?          @db.Text
+  result    InterviewResult?
+  completed Boolean          @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([applicationId])
+  @@index([date])
+}
+
+enum InterviewType {
+  PHONE
+  VIDEO
+  ONSITE
+  TECHNICAL
+  HR
+  FINAL
+}
+
+enum InterviewResult {
+  PASSED
+  FAILED
+  PENDING
+}
+
+// ============================================
+// DONATIONS
+// ============================================
+model Donation {
+  id     String  @id @default(cuid())
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  amount      Decimal @db.Decimal(10, 2)
+  currency    String  @default("TRY")
+  message     String? @db.Text
+  isAnonymous Boolean @default(false)
+
+  // Donor Info (if not user)
+  donorName  String?
+  donorEmail String?
+
+  // Payment
+  paymentId     String?       @unique
+  paymentStatus PaymentStatus @default(PENDING)
+  paymentMethod String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([paymentStatus])
+  @@index([createdAt])
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+// ============================================
+// NOTIFICATIONS
+// ============================================
+model Notification {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade) // DÜZELTME: Relation eklendi
+
+  type    NotificationType
+  title   String
+  message String           @db.Text
+  link    String?
+
+  isRead Boolean   @default(false)
+  readAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
+}
+
+enum NotificationType {
+  APPLICATION_UPDATE
+  INTERVIEW_REMINDER
+  PREMIUM_EXPIRING
+  NEW_FEATURE
+  SYSTEM
+}

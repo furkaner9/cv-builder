@@ -112,7 +112,7 @@ export default function ComparePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+    <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50">
       {/* Header */}
       <header className="bg-white border-b sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4">
@@ -181,7 +181,7 @@ export default function ComparePage() {
                 <Button
                   onClick={handleCompare}
                   disabled={!cv1 || !cv2 || isComparing}
-                  className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+                  className="w-full bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
                   size="lg"
                 >
                   {isComparing ? (
@@ -277,7 +277,7 @@ export default function ComparePage() {
               </Card>
 
               {/* VS Kartı */}
-              <Card className="bg-gradient-to-br from-indigo-50 to-purple-50 flex items-center justify-center">
+              <Card className="bg-linear-to-br from-indigo-50 to-purple-50 flex items-center justify-center">
                 <CardContent className="text-center py-6">
                   <div className="text-6xl font-bold text-indigo-600">VS</div>
                   <p className="text-sm text-gray-600 mt-2">
@@ -491,7 +491,7 @@ export default function ComparePage() {
 
             {/* Genel Öneriler */}
             <Card className="border-2 border-blue-200">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50">
+              <CardHeader className="bg-linear-to-r from-blue-50 to-indigo-50">
                 <CardTitle className="flex items-center gap-2">
                   <Award className="w-5 h-5 text-blue-600" />
                   Genel İyileştirme Önerileri
